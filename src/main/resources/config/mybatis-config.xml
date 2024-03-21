@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="defaultStatementTimeout" value="0"/>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings> 
+
+	<typeAliases>
+		<typeAlias alias="Automovil" type="mx.smartkode.webmvc.model.Automovil"/>
+		<typeAlias alias="Empleado" type="mx.smartkode.webmvc.model.Empleado"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="dao/maps/AutomovilMap.xml" />  
+		<mapper resource="dao/maps/EmpleadoMap.xml" />  
+	</mappers>
+
+</configuration>

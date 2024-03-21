@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EmpleadoMapper">
+
+	<resultMap id="EmpleadoMap" type="Empleado">
+        <id 		property="id" 		    	column="ID"/>
+        <result 	property="nombre"			column="NOMBRE"/>
+        <result 	property="puesto" 		    column="PUESTO"/>
+        <result 	property="sueldo" 	        column="SUELDO"/>
+   	</resultMap> 
+
+	<insert id="ingresaEmpleado" parameterType="Empleado" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO EMPLEADO
+		(NOMBRE, PUESTO, SUELDO) VALUES (#{nombre}, #{puesto}, #{sueldo})
+	</insert>
+	
+	<select id="consultaEmpleado" resultMap="EmpleadoMap" parameterType="integer">
+		select * from EMPLEADO where id=#{id}
+	</select>
+	
+	<select id="consultaEmpleados" resultMap="EmpleadoMap">
+		select * from EMPLEADO
+	</select>
+	
+	<delete id="eliminaEmpleado" parameterType="integer">
+		delete from EMPLEADO where id=#{id}
+	</delete>
+	
+	<update id="actualizaEmpleado" parameterType="Empleado">
+		UPDATE EMPLEADO
+		set NOMBRE=#{nombre}, PUESTO=#{puesto}, SUELDO=#{sueldo}
+		where id=#{id}
+	</update>
+	
+	
+</mapper>

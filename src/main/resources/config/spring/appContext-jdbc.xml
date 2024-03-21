@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:jee="http://www.springframework.org/schema/jee"
+     xsi:schemaLocation="
+	     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+	     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd" 
+     default-autowire="byName">
+     
+     <tx:annotation-driven/>
+	
+	<!-- Data Source DEV QA Y PROD weblogic Masivo Honorario 
+	<jee:jndi-lookup id="dataSourceORAHM" jndi-name="jdbc/crud"/>    -->     
+
+	 <!-- DataSource Oracle      
+ 	  <bean id="dataSourceORA" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+         <property name="driverClassName" value="${jdbc.driverClassName}" />
+         <property name="url" value="${jdbc.url}" /> 
+         <property name="username" value="${jdbc.username}" /> 
+         <property name="password" value="${jdbc.password}" /> 
+     </bean>  -->    
+     
+     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="maximumPoolSize" value="${jdbc.maximumPoolSize}" />
+		<property name="poolName" value="${jdbc.poolName}" />
+		<property name="connectionTimeout" value="${jdbc.connectionTimeout}" />
+		<property name="dataSourceClassName" value="${jdbc.dataSourceClassName}" />
+		<property name="dataSourceProperties">
+			<props>
+				<prop key="user">${jdbc.username}</prop>
+				<prop key="password">${jdbc.passwd}</prop> 
+				<prop key="url">${jdbc.url}</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="sqlSession" class="com.zaxxer.hikari.HikariDataSource"
+		depends-on="hikariConfig" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+     
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="sqlSession" />
+		<property name="configLocation" value="classpath:config/mybatis-config.xml" />
+	</bean>
+	
+	<!-- 
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean> -->
+	
+	<context:annotation-config/>
+	<tx:annotation-driven  transaction-manager="transactionManager"/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="sqlSession" />
+	</bean>
+	
+	<context:annotation-config/>
+	<tx:annotation-driven  transaction-manager="transactionManager"/>
+	
+</beans>
+	

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AutomovilMapper">
+
+	<resultMap id="AutomovilMap" type="Automovil">
+        <id 		property="id" 		    	column="ID"/>
+        <result 	property="marca"			column="MARCA"/>
+        <result 	property="modelo" 		    column="MODELO"/>
+        <result 	property="anioFabricacion" 	column="ANIOFABRICACION"/>
+   	</resultMap>
+
+	<insert id="ingresaAutomovil" parameterType="Automovil" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO AUTOMOVIL
+		(MARCA, MODELO, ANIOFABRICACION) VALUES (#{marca}, #{modelo}, #{anioFabricacion})
+	</insert>
+	
+	<select id="consultaAutomovil" resultMap="AutomovilMap" parameterType="integer">
+		select * from AUTOMOVIL where id=#{id}
+	</select>
+	
+	<select id="consultaAutomoviles" resultMap="AutomovilMap">
+		select * from AUTOMOVIL
+	</select>
+	
+	<delete id="eliminaAutomovil" parameterType="integer">
+		delete from AUTOMOVIL where id=#{id}
+	</delete>
+	
+	<update id="actualizaAutomovil" parameterType="Automovil">
+		UPDATE AUTOMOVIL
+		set MARCA=#{marca}, MODELO=#{modelo}, ANIOFABRICACION=#{anioFabricacion}
+		where id=#{id}
+	</update>
+	
+</mapper>
